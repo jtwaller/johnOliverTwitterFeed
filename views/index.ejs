@@ -9,10 +9,20 @@
   <body>
     <div class="container">
       <img src="img/iamjohnoliver.png" />
+
+      <!-- This seems pretty sloppy, but it seems to work! -->
+      <% tweets.forEach(function(tweet) { %>
       <div class="tweet">
-        <p>John Oliver - @iamjohnoliver - {date}</p>
-        <p>Here's our piece about the Iran Deal from last night...</p>
+        <p>
+          <span class="userName"><%= tweet.user_name %></span>&nbsp;&nbsp;
+          <span class="screenName">@<%= tweet.screen_name %></span>&nbsp;&nbsp;
+          <span class="date"><%= tweet.tweet_date %></span>
+        </p>
+          <p>
+            <%= tweet.tweet_body %>
+          </p>
       </div>
+      <% }) %>
     </div>
   </body>
 </html>

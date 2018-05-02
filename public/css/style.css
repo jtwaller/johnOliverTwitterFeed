@@ -44,3 +44,16 @@ img {
 p {
   color: #E64A19;
 }
+
+.userName {
+  color: #000000;
+  font-weight: bold;
+}
+
+.screenName {
+  color: #000000;
+}
+
+.date {
+  color: #989898;
+}

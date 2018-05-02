@@ -6,9 +6,12 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.get('/', (req, res) => res.render('index'));
-
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+function Tweet(user_name, screen_name, tweet_date, tweet_body) {
+	this.user_name = user_name;
+	this.screen_name = screen_name;
+	this.tweet_date = tweet_date;
+	this.tweet_body = tweet_body;
+};
 
 // I might be able to get away with application only based auth
 // Probably not worth looking into it at the moment, so I'm just
@@ -20,10 +23,31 @@ var client = new Twitter({
 	access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
-client.get('statuses/user_timeline.json?screen_name=iamjohnoliver&count=100', function(error, tweets, response) {
-	if (error) {
-		console.log(error);
-		throw error;
-	}
-	console.log(tweets);
+var tweetArray = [];
+
+client.get('statuses/user_timeline.json?screen_name=iamjohnoliver&count=50', function(error, tweets, response) {	
+	if (error) throw error;
+	tweets.forEach(function(tweet) {
+		var dateSplit = tweet.created_at.split(" ");
+		var date = dateSplit[1] + " " + dateSplit[2];
+		tweetArray.push(
+			new Tweet(
+				tweet.user.name,
+				tweet.user.screen_name,
+				date,
+				tweet.text
+			)
+		);
+	});
 });
+
+app.get('/', function (req, res) {
+	// With more time, figure out how to update UI in client.get callback
+	if (tweetArray.length == 0) {
+		res.send("No tweets in array, try refreshing.\n\n")
+	} else {
+		res.render('index', {tweets: tweetArray});
+	}
+});
+
+app.listen(3000, () => console.log('Example app listening on port 3000!'));
