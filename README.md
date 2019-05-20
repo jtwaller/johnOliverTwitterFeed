@@ -7,3 +7,7 @@ Run app.js
 `$ node app.js`
 
 Point your browser to localhost:3000
+
+![](twitter_demo.gif)
+
+[High-res demo](https://gfycat.com/PettyDearAlpaca)
